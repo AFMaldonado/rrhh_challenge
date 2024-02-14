@@ -1,0 +1,59 @@
+swagger: '2.0'
+info:
+  title: API RRHH
+  description: Sample API on Cloud Endpoints with a Cloud Run backend
+  version: 1.0.0
+host: api-rrhh.apigateway.proyect-pma.cloud.goog
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /upload_departments:
+    post:
+      summary: Upload CSV file to database
+      operationId: uploadCsvToDatabaseDepartments
+      x-google-backend:
+        address: https://api-test-ckyx4lvk6a-uc.a.run.app/upload_departments
+        protocol: h2
+      consumes:
+        - multipart/form-data
+      responses:
+        '200':
+          description: File uploaded successfully
+      security:
+        - api_key: []
+  /upload_jobs:
+    post:
+      summary: Upload CSV file to database
+      operationId: uploadCsvToDatabaseJobs
+      x-google-backend:
+        address: https://api-test-ckyx4lvk6a-uc.a.run.app/upload_jobs
+        protocol: h2
+      consumes:
+        - multipart/form-data
+      responses:
+        '200':
+          description: File uploaded successfully
+      security:
+        - api_key: []
+  /upload_hired_employees:
+    post:
+      summary: Upload CSV file to database
+      operationId: uploadCsvToDatabase_Hired_employees
+      x-google-backend:
+        address: https://api-test-ckyx4lvk6a-uc.a.run.app/upload_hired_employees
+        protocol: h2
+      consumes:
+        - multipart/form-data
+      responses:
+        '200':
+          description: File uploaded successfully
+      security:
+        - api_key: []
+securityDefinitions:
+  # This section configures basic authentication with an API key.
+  api_key:
+    type: "apiKey"
+    name: "key"
+    in: "query"
