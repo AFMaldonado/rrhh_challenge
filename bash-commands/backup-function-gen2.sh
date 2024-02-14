@@ -1,0 +1,1 @@
+gcloud functions deploy backup --gen2 --runtime python39 --region=us-central1 --entry-point=main --trigger-http
