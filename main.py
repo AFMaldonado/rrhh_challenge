@@ -37,17 +37,55 @@ def upload_csv_and_insert(file, table_name, columns):
     Returns:
         dict: A dictionary containing a success message or an error message.
     """
-    data = []
+    batch_size = 1000  # Size of the batch
+    
     try:
         # Read the CSV file and process the data
         csvfile = codecs.iterdecode(file.file, 'utf-8')
         csvReader = csv.reader(csvfile, delimiter=';')
+        
+        data = []
+        row_count = 0
+        
         for row in csvReader:
             if row[0].startswith('\ufeff'):
                 row[0] = row[0][1:]
-            row = [None if item == '' else item for item in row]
-            data.append(row)
+            if any(item == '' for item in row):
+                print("Missing fields in row:", row)
+            else:
+                data.append(row)
+            
+            row_count += 1
+            
+            if row_count % batch_size == 0:
+                # Insert the current batch into the database
+                insert_batch_to_database(data, table_name, columns)
+                # Reset the data list for the next batch
+                data = []
         
+        # Insert the remaining batch into the database
+        if data:
+            insert_batch_to_database(data, table_name, columns)
+
+    except SQLAlchemyError as e:
+        # Handle SQLAlchemy errors
+        return {"error": str(e)}
+    except Exception as e:
+        # Handle other errors
+        return {"error": str(e)}
+    
+    return {"message": "Data uploaded successfully"}
+
+def insert_batch_to_database(data, table_name, columns):
+    """
+    Inserts a batch of data into the database.
+
+    Args:
+        data (list): The list of data rows to insert.
+        table_name (str): The name of the MySQL table where the data will be inserted.
+        columns (list): The list of column names for the table.
+    """
+    try:
         # Create a pandas DataFrame with the data and set column names
         df = pd.DataFrame(data, columns=columns)
         df.columns = columns
@@ -63,13 +101,7 @@ def upload_csv_and_insert(file, table_name, columns):
 
     except SQLAlchemyError as e:
         # Handle SQLAlchemy errors
-        return {"error": str(e)}
-    except Exception as e:
-        # Handle other errors
-        return {"error": str(e)}
-    
-    return {"message": "Data uploaded successfully"}
-
+        raise e
 
 @app.post("/upload_departments")
 def upload_departments(file: UploadFile = File(...)):
