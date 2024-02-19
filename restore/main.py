@@ -2,7 +2,7 @@ from google.cloud import storage, secretmanager
 import mysql.connector
 import fastavro
 import os
-from secret_manager import SecretManagerGCP
+from api.secret_manager import SecretManagerGCP
 import json
 
 # Configuration for Google Cloud Storage

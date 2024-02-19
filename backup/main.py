@@ -1,4 +1,4 @@
-from google.cloud import storage, secretmanager
+from google.cloud import storage
 import mysql.connector
 import fastavro
 import os

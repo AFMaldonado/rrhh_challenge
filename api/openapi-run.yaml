@@ -51,6 +51,30 @@ paths:
           description: File uploaded successfully
       security:
         - api_key: []
+  /dept_job_hiring_2021:
+    get:
+      summary: Get employees hired by job and department in 2021
+      operationId: get_dept_job_hiring_2021
+      x-google-backend:
+        address: https://api-test-ckyx4lvk6a-uc.a.run.app/dept_job_hiring_2021
+        protocol: h2
+      responses:
+        '200':
+          description: Metric retrieved
+      security:
+        - api_key: []
+  /dept_above_avg_hiring:
+    get:
+      summary: Get departments that hired above average in 2021
+      operationId: get_dept_above_avg_hiring
+      x-google-backend:
+        address: https://api-test-ckyx4lvk6a-uc.a.run.app/dept_above_avg_hiring
+        protocol: h2
+      responses:
+        '200':
+          description: Metric retrieved
+      security:
+        - api_key: []
 securityDefinitions:
   # This section configures basic authentication with an API key.
   api_key:
