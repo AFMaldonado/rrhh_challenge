@@ -1,0 +1,1 @@
+gcloud run jobs create move-historic --image us-central1-docker.pkg.dev/proyect-pma/cloud-run/jobs:latest --region us-central1
